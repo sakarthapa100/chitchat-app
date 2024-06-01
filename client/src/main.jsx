@@ -1,15 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { CssBaseline } from '@material-ui/core'
-import {HelmetProvider } from 'react-helmet-async'
+import './index.css'
+import { Toaster } from 'react-hot-toast'
+import { Provider } from 'react-redux'
+import store from './redux/store.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <HelmetProvider >
-      <CssBaseline />
-    <App />
-    </HelmetProvider>
+    <Provider store={store}>
+      <App />
+    <Toaster />
+    </Provider>
     
   </React.StrictMode>,
 )

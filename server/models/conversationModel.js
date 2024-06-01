@@ -11,6 +11,6 @@ const converstaionModel = mongoose.Schema({
   }]
 },{timestamps:true})
 
-const Converstation = mongoose.model("Converstation", converstaionModel)
+const Conversation = mongoose.model("Conversation", converstaionModel)
 
-module.exports=Converstation
+module.exports=Conversation
