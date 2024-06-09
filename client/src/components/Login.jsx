@@ -1,20 +1,21 @@
-
 import React, { useState } from 'react';
 import backgroundImage from '/background.jpg'; 
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setAuthUser } from '../redux/userSlice';
-const LoginPage = () => {
 
-  const[ user, setUser] = useState({
-    username:"",
-    password:""
-  })
-  const dispatch = useDispatch()
-const navigate = useNavigate()
-  const handleSubmit =async (e) => {
+const LoginPage = () => {
+  const [user, setUser] = useState({
+    username: "",
+    password: ""
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
@@ -27,23 +28,26 @@ const navigate = useNavigate()
           withCredentials: true,
         }
       );
-if(res.data.success){
-  navigate('/')
- console.log(res);
-}
 
-     
-      // console.log(res.config.data);
-      // dispatch(setAuthUser(res.data))
+      console.log('Response:', res);
+
+      if (res.data.success) {
+        console.log('Login successful, navigating to home page');
+        navigate('/');
+      } else {
+        console.log('Login failed:', res.data.message);
+      }
+
+      // Reset user state
+      setUser({
+        username: "",
+        password: ""
+      });
+
     } catch (error) {
-      toast.error(error.response.data.message)
-      console.log(error);
+      toast.error(error.response.data.message);
+      console.error('Error:', error);
     }
-    console.log(user);
-  setUser({
-    username:"",
-    password:""
-  })
   };
 
   return (
@@ -60,16 +64,16 @@ if(res.data.success){
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-900 font-bold mb-2">
-            username
+            <label htmlFor="username" className="block text-gray-900 font-bold mb-2">
+              Username
             </label>
             <input
-              type="username"
+              type="text"
               id="username"
               value={user.username}
-              onChange={(e) => setUser({...user , username:e.target.value})}
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your email"
+              placeholder="Enter your username"
               required
             />
           </div>
@@ -81,7 +85,7 @@ if(res.data.success){
               type="password"
               id="password"
               value={user.password}
-              onChange={(e) => setUser({...user , password:e.target.value})}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter your password"
               required
@@ -94,9 +98,9 @@ if(res.data.success){
             >
               Login
             </button>
-            <a href="#" className="inline-block align-baseline font-bold text-sm text-blue-400 hover:text-blue-500">
+            <Link to="#" className="inline-block align-baseline font-bold text-sm text-blue-400 hover:text-blue-500">
               Forgot Password?
-            </a>
+            </Link>
           </div>
         </form>
       </div>

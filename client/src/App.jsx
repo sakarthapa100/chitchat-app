@@ -1,6 +1,8 @@
 import React, { lazy } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'; 
 import './App.css'
+import AdminLogin from './admin/AdminLogin';
+import Dashboard from './admin/Dashboard';
 
 
 const Home =lazy(()=> import ("./components/Home"))
@@ -19,6 +21,9 @@ function App() {
    <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
+      <Route path='/admin' element={<AdminLogin />} />
+      <Route path='/admin/dashboard' element={<Dashboard />} />
+
       <Route path='*' element={<Notfound />}></Route>
 
 

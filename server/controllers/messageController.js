@@ -43,15 +43,27 @@ module.exports.sendMessage = async (req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 };
-module.exports.receiveMessage = async(req,res)=> {
+module.exports.receiveMessage = async (req, res) => {
   try {
-    const senderId= req.id
-    const receiverId= req.params.id
-const conversation = await Conversation.findOne({
-  participants:{$all:[senderId, receiverId]}
-}).populate("messages")
-console.log(conversation.messages)
+    const senderId = req.id;
+    const receiverId = req.params.id;
+
+    if (!senderId || !receiverId) {
+      return res.status(400).send({ error: 'Sender ID and Receiver ID are required' });
+    }
+
+    const conversation = await Conversation.findOne({
+      participants: { $all: [senderId, receiverId] }
+    }).populate("messages");
+
+    if (!conversation) {
+      return res.status(404).send({ error: 'Conversation not found' });
+    }
+
+    console.log(conversation.messages);
+
+    res.status(200).send(conversation.messages);
   } catch (error) {
-    console.log(error)
-  }
-}
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }}

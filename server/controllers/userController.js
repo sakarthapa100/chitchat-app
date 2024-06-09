@@ -6,7 +6,7 @@ const User = require('../models/userModel'); // Ensure the correct path to your 
 module.exports.registerController = async (req, res) => {
   try {
     const {
-      fullName,
+     
       email,
       username,
       phoneNumber,
@@ -32,6 +32,9 @@ module.exports.registerController = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
+const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${ username}`;
+const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
 
     await User.create({
   
@@ -39,7 +42,8 @@ module.exports.registerController = async (req, res) => {
       username,
       phoneNumber,
       password: hashedPassword,
-    
+      profilePhoto: gender === 'male' ? maleProfilePhoto : femaleProfilePhoto,
+
       gender,
     });
 

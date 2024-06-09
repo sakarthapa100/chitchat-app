@@ -1,25 +1,22 @@
 import React from "react";
-import OtherUser  from "./OtherUser";
+import { useSelector } from "react-redux";
+import OtherUser from "./OtherUser";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
 
 const OtherUsers = () => {
-  useGetOtherUsers()
+  useGetOtherUsers();
+  const otherUsers = useSelector((state) => state.user.otherUsers);
+
   return (
     <div className="overflow-auto h-128">
-     <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
- <OtherUser />
+      {otherUsers.length > 0 ? (
+        otherUsers.map((user) => (
+          <OtherUser key={user.id} user={user} />
+        ))
+      ) : (
+        <p>No other users found.</p>
+      )}
     </div>
-
   );
 };
 
