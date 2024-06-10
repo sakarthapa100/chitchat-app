@@ -36,7 +36,7 @@ module.exports.sendMessage = async (req, res) => {
 
     // Send a success response
     return res.status(201).json({
-      message: "Message sent successfully"
+      newMessage
     });
   } catch (error) {
     console.error(error);
