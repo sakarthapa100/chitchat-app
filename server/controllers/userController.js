@@ -6,22 +6,22 @@ const User = require('../models/userModel'); // Ensure the correct path to your 
 module.exports.registerController = async (req, res) => {
   try {
     const {
-      fullName,
+     
       email,
       username,
       phoneNumber,
       password,
-      profileImage,
+     
       gender,
     } = req.body;
 
     if (
-      !fullName ||
+     
       !email ||
       !username ||
       !phoneNumber ||
       !password ||
-      !profileImage ||
+     
       !gender
     ) {
       return res.status(400).json({ message: "All fields are required " });
@@ -32,15 +32,18 @@ module.exports.registerController = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const maleProfile = `https://avatar.iran.liara.run/public/boy${username}`;
-    const femaleProfile = `https://avatar.iran.liara.run/public/girl${username}`;
+const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${ username}`;
+const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+
     await User.create({
-      fullName,
+  
       email,
       username,
       phoneNumber,
       password: hashedPassword,
-      profileImage: gender === "male" ? maleProfile : femaleProfile, // Fixed the comparison here
+      profilePhoto: gender === 'male' ? maleProfilePhoto : femaleProfilePhoto,
+
       gender,
     });
 
@@ -92,10 +95,12 @@ module.exports.loginController = async (req, res) => {
     
     return res
       .status(200)
-      .cookie("token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true })
+      .cookie("token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true,sameSite:'strict' })
       .json({
-        message: `Welcome back ${username}`,
-        success: true,
+       _id:user._id,
+       username:user.username,
+       profilePhoto:user.profilePhoto
+        
       });
   } catch (error) {
     console.error(error);
@@ -119,7 +124,9 @@ module.exports.logoutController = async (req, res) => {
 
 module.exports.getOtherUsers = async(req,res) => {
   try {
-    
+    const loggedInUserId = req.id
+    const otherUser = await User.find({_id:{$ne:loggedInUserId}}).select("-password")
+    return res.status(200).json(otherUser)
   } catch (error) {
     
   }
