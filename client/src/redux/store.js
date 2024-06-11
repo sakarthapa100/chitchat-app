@@ -2,11 +2,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import messageReducer from './messageSlice';
 import userReducer from './userSlice';
+import socketReducer from './socketSlice'
 
 const store = configureStore({
   reducer: {
     message: messageReducer,
-    user: userReducer
+    user: userReducer,
+    socket: socketReducer
   }
 });
 

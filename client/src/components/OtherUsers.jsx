@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import OtherUser from "./OtherUser";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
 
-const OtherUsers = () => {
+const OtherUsers = ({users}) => {
   useGetOtherUsers();
   const otherUsers = useSelector((state) => state.user.otherUsers);
 

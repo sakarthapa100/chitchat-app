@@ -31,7 +31,6 @@ const SendInput = () => {
       console.error(error);
     }
 
-    alert(message);
     setMessage("");
   };
 

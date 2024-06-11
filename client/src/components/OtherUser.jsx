@@ -16,7 +16,9 @@ const OtherUser = ({ user }) => {
   const placeholderImageUrl = generatePlaceholderImageUrl(user);
 
   const dispatch = useDispatch();
-  const {selectedUser} = useSelector(store=> store.user)
+  
+  const {selectedUser, onlineUsers} = useSelector(store=> store.user)
+  const isOnline = onlineUsers.includes(user._id)
   const selectedUserHandler = (user) => {
 
     dispatch(setSelectedUser(user));
@@ -29,7 +31,7 @@ const OtherUser = ({ user }) => {
         onClick={() => selectedUserHandler(user)}
         className={`${selectedUser?._id ===user?._id ? 'bg-zinc-100 ': ''}flex flex-col sm:flex-row gap-2 items-center hover:bg-zinc-100 rounded p-2 cursor-pointer w-full max-w-lg border border-zinc-100 border-opacity-10`}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isOnline ? 'online' : ''} online`}>
           <div className="w-12 rounded-full">
             <img
               src={user.profilePhoto || placeholderImageUrl}
